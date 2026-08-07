@@ -24,10 +24,4 @@ export type euler = {
 	z: number,
 }
 
-export type XYZ = {
-	x: number,
-	y: number,
-	z: number,
-}
-
 return types
