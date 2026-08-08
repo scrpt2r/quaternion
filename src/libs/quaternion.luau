@@ -217,7 +217,7 @@ function quaternion.rotate(q: quaternion, v: vector): vector
 end
 
 function quaternion.slerp(q1: quaternion, q2: quaternion, t: number, output: quaternion)
-	local cosHalfTheta = q1.w * q2.w + q1.x - q2.x + q1.y * q2.y + q1.z * q2.z
+	local cosHalfTheta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z
 
 	if abs(cosHalfTheta) >= 1.0 then
 		quaternion._copy(q1, output)
