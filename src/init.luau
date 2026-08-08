@@ -6,9 +6,9 @@
 	* @file		  	: ...encodingTechiques.luau
 	* @author	  	: scrpt2r
 	* @date		  	: August 2026
-	* @lastEdit		: August 08 2026 15:34
+	* @lastEdit		: August 08 2026 16:05
 	* @brief	  	: A basic quaternion library.
-	* @version		: 1.8.0
+	* @version		: 2.0.0
 	******************************************************************************
 	* @attention
 	*

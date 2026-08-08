@@ -176,10 +176,16 @@ end
 function quaternion.multiply(q1: quaternion, q2: quaternion, output: quaternion)
 	assert(output ~= nil)
 
-	output.w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
-	output.x = q1.x * q2.w + q1.w * q2.x + q1.y * q2.z - q1.z * q2.y
-	output.y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x
-	output.z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w
+	local w: number, x: number, y: number, z: number
+	w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
+	x = q1.x * q2.w + q1.w * q2.x + q1.y * q2.z - q1.z * q2.y
+	y = q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x
+	z = q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w
+
+	output.w = w
+	output.x = x
+	output.y = y
+	output.z = z
 end
 
 function quaternion.rotate(q: quaternion, v: vector): vector
@@ -228,18 +234,30 @@ function quaternion.slerp(q1: quaternion, q2: quaternion, t: number, output: qua
 	local sinHalfTheta = sqrt(1.0 - cosHalfTheta * cosHalfTheta)
 
 	if abs(sinHalfTheta) < QUATERNION_EPS then
-		output.w = (q1.w * 0.5 + q2.w * 0.5)
-		output.x = (q1.x * 0.5 + q2.x * 0.5)
-		output.y = (q1.y * 0.5 + q2.y * 0.5)
-		output.z = (q1.z * 0.5 + q2.z * 0.5)
+		local w: number, x: number, y: number, z: number
+		w = (q1.w * 0.5 + q2.w * 0.5)
+		x = (q1.x * 0.5 + q2.x * 0.5)
+		y = (q1.y * 0.5 + q2.y * 0.5)
+		z = (q1.z * 0.5 + q2.z * 0.5)
+
+		output.w = w
+		output.x = x
+		output.y = y
+		output.z = z
 	else
 		local ratioA = sin((1 - t) * halfTheta) / sinHalfTheta
 		local ratioB = sin(t * halfTheta) / sinHalfTheta
 
-		output.w = (q1.w * ratioA + q2.w * ratioB)
-		output.x = (q1.x * ratioA + q2.x * ratioB)
-		output.y = (q1.y * ratioA + q2.y * ratioB)
-		output.z = (q1.z * ratioA + q2.z * ratioB)
+		local w: number, x: number, y: number, z: number
+		w = (q1.w * ratioA + q2.w * ratioB)
+		x = (q1.x * ratioA + q2.x * ratioB)
+		y = (q1.y * ratioA + q2.y * ratioB)
+		z = (q1.z * ratioA + q2.z * ratioB)
+
+		output.w = w
+		output.x = x
+		output.y = y
+		output.z = z
 	end
 end
 
