@@ -243,8 +243,98 @@ function quaternion.slerp(q1: quaternion, q2: quaternion, t: number, output: qua
 	end
 end
 
-function quaternion.fromMatrix() end
+function quaternion.fromMatrix(
+	R00: number, -- r11
+	R01: number, -- r12
+	R02: number, -- r13
+	R10: number, -- r21
+	R11: number, -- r22
+	R12: number, -- r23
+	R20: number, -- r31
+	R21: number, -- r32
+	R22: number, -- r33
+	output: quaternion
+)
+	--[[
+		Formula from: https://www.researchgate.net/publication/325950745_Accurate_Computation_of_Quaternions_from_Rotation_Matrices
+		from 23 to 26 
+	]]
 
-function quaternion.fromCFrame() end
+	--[[
+		q1: w
+		q2: x
+		q3: y
+		q4: z
+	]]
+
+	--// q1
+	if (R00 + R11 + R22) > 0 then
+		output.w = sqrt(1 + R00 + R11 + R22) / 2.0
+	else
+		--stylua: ignore
+		output.w = sqrt(
+			(((R21 - R12) * (R21 - R12)) + 
+			((R02 - R20) * (R02 - R20)) + 
+			((R10 - R01) * (R10 - R01))) 
+			/ (3 - R00 - R11 - R22)
+		) / 2.0
+	end
+
+	--// q2
+	if (R00 - R11 - R22) > 0 then
+		output.x = sqrt(1 + R00 - R11 - R22) / 2.0
+	else
+		--stylua: ignore
+		output.x = sqrt(
+			(((R21 - R12) * (R21 - R12)) + 
+			((R01 + R10) * (R01 + R10)) + 
+			((R20 + R02) * (R20 + R02))) 
+			/ (3 - R00 + R11 + R22)
+		) / 2.0
+	end
+
+	--// q3
+	if (-R00 + R11 - R22) > 0 then
+		output.y = sqrt(1 - R00 + R11 - R22) / 2.0
+	else
+		--stylua: ignore
+		output.y = sqrt(
+			(((R02 - R20) * (R02 - R20)) + 
+			((R01 + R10) * (R01 + R10)) + 
+			((R12 + R21) * (R12 + R21)))
+			/ (3 + R00 - R11 + R22)
+		) / 2.0
+	end
+
+	--// q4
+	if (-R00 - R11 + R22) > 0 then
+		output.z = sqrt(1 - R00 - R11 + R22) / 2.0
+	else
+		--stylua: ignore
+		output.z = sqrt(
+			(((R10 - R01) * (R10 - R01)) + 
+			((R20 + R02) * (R20 + R02)) + 
+			((R21 + R12) * (R21 + R12)))
+			/ (3 + R00 + R11 - R22)
+		) / 2.0
+	end
+end
+
+function quaternion.fromCFrame(cframe: CFrame, output: quaternion)
+	--stylua: ignore
+	local _, _, _,
+	R00: number, 
+	R01: number, 
+	R02: number, 
+	R10: number, 
+	R11: number, 
+	R12: number, 
+	R20: number, 
+	R21: number, 
+	R22: number 
+	= cframe:GetComponents()
+
+	quaternion.fromMatrix(R00, R01, R02, R10, R11, R12, R20, R21, R22, output)
+end
 
 return quaternion
