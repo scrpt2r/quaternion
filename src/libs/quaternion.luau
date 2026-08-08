@@ -45,6 +45,10 @@ function quaternion._set(w: number, v1: number, v2: number, v3: number, output: 
 	output.z = v3
 end
 
+function quaternion._copy(q: quaternion, output: quaternion)
+	quaternion._set(q.w, q.x, q.y, q.z, output)
+end
+
 function quaternion._norm(q: quaternion): number
 	assert(q ~= nil)
 	return sqrt(q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z)
@@ -54,10 +58,6 @@ end
 function quaternion.identity(q: quaternion)
 	assert(q ~= nil)
 	quaternion._set(1, 0, 0, 0, q)
-end
-
-function quaternion.copy(q: quaternion, output: quaternion)
-	quaternion._set(q.w, q.x, q.y, q.z, output)
 end
 
 function quaternion.isEqual(q1: quaternion, q2: quaternion): boolean
@@ -215,5 +215,36 @@ function quaternion.rotate(q: quaternion, v: vector): vector
 
 	return vector.create(resX, resY, resZ)
 end
+
+function quaternion.slerp(q1: quaternion, q2: quaternion, t: number, output: quaternion)
+	local cosHalfTheta = q1.w * q2.w + q1.x - q2.x + q1.y * q2.y + q1.z * q2.z
+
+	if abs(cosHalfTheta) >= 1.0 then
+		quaternion._copy(q1, output)
+		return
+	end
+
+	local halfTheta = acos(cosHalfTheta)
+	local sinHalfTheta = sqrt(1.0 - cosHalfTheta * cosHalfTheta)
+
+	if abs(sinHalfTheta) < QUATERNION_EPS then
+		output.w = (q1.w * 0.5 + q2.w * 0.5)
+		output.x = (q1.x * 0.5 + q2.x * 0.5)
+		output.y = (q1.y * 0.5 + q2.y * 0.5)
+		output.z = (q1.z * 0.5 + q2.z * 0.5)
+	else
+		local ratioA = sin((1 - t) * halfTheta) / sinHalfTheta
+		local ratioB = sin(t * halfTheta) / sinHalfTheta
+
+		output.w = (q1.w * ratioA + q2.w * ratioB)
+		output.x = (q1.x * ratioA + q2.x * ratioB)
+		output.y = (q1.y * ratioA + q2.y * ratioB)
+		output.z = (q1.z * ratioA + q2.z * ratioB)
+	end
+end
+
+function quaternion.fromMatrix() end
+
+function quaternion.fromCFrame() end
 
 return quaternion
