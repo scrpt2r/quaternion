@@ -1,5 +1,6 @@
 --!native
 --!optimize 2
+--!strict
 
 --// Libs
 local types = require(script.Parent.global.types)
