@@ -292,6 +292,7 @@ function quaternion.fromMatrix(
 			/ (3 - R00 + R11 + R22)
 		) / 2.0
 	end
+	output.x = copysign(output.x, R21 - R12)
 
 	--// q3
 	if (-R00 + R11 - R22) > 0 then
@@ -305,6 +306,7 @@ function quaternion.fromMatrix(
 			/ (3 + R00 - R11 + R22)
 		) / 2.0
 	end
+	output.y = copysign(output.y, R02 - R20)
 
 	--// q4
 	if (-R00 - R11 + R22) > 0 then
@@ -318,6 +320,7 @@ function quaternion.fromMatrix(
 			/ (3 + R00 + R11 - R22)
 		) / 2.0
 	end
+	output.z = copysign(output.z, R10 - R01)
 end
 
 function quaternion.fromCFrame(cframe: CFrame, output: quaternion)

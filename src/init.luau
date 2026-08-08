@@ -8,7 +8,7 @@
 	* @date		  	: August 2026
 	* @lastEdit		: August 08 2026 15:34
 	* @brief	  	: A basic quaternion library.
-	* @version		: 1.7.0
+	* @version		: 1.8.0
 	******************************************************************************
 	* @attention
 	*
